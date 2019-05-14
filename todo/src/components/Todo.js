@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { populateTodo, toggleTodo } from '../actions'
+import { populateTodo, toggleTodo, deleteTodo } from '../actions'
 
 class Todo extends React.Component {
 
@@ -45,6 +45,11 @@ class Todo extends React.Component {
 
     }
 
+    deleteTodo = (event,id) => {
+        event.preventDefault();
+        this.props.deleteTodo(id)
+    }
+
     render() {
         return (
             <div>
@@ -53,16 +58,18 @@ class Todo extends React.Component {
                         this.props.todosFromRedux.map(todo => (
                             <div>
                                 <h4
-                                className={this.updatedButton(todo.completed)}>{todo.value}
+                                    className={this.updatedButton(todo.completed)}>{todo.value}
                                     <button
                                         onClick=
                                         {(event) => this.toggleComplete(event, todo)}
-                                    >{this.updatedButton(todo.completed)}</button></h4>
+                                    >{this.updatedButton(todo.completed)}</button>
+                                    <button
+                                        onClick=
+                                        {(event) => this.deleteTodo(event, todo.id)}
+                                    >X</button>
+                                </h4>
 
-                                {/* <button
-                                    onClick=
-                                    {(event) => this.toggleComplete(event, todo)}
-                                >{this.updatedButton(todo.completed)}</button> */}
+
                             </div>
 
                         ))}
@@ -89,5 +96,5 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps,
-    { populateTodo, toggleTodo })
+    { populateTodo, toggleTodo, deleteTodo })
     (Todo);
